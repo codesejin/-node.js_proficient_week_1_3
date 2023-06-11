@@ -1,21 +1,17 @@
-const jwt = require("jsonwebtoken");
+const express = require('express');
+const app = express();
 
-const payloadData = {
-    myPayloadData : 1234
-}
+app.post('/login', function (req, res, next) {
+  const user = { // 사용자 정보
+    userId: 203, // 사용자의 고유 아이디 (Primary key)
+    email: "archepro84@gmail.com", // 사용자의 이메일
+    name: "이용우", // 사용자의 이름
+  }
 
-// jwt 생성
-const token = jwt.sign(payloadData, "mysecretKey");
-console.log(token);
+  res.cookie('sparta', user);  // sparta 라는 이름을 가진 쿠키에 user 객체를 할당합니다.
+  return res.status(200).end();
+});
 
-// jwt의 payload 데이터를 복호화
-const decodedValue = jwt.decode(token);
-console.log("복호한 token 입니다." , decodedValue);
-
-// jwt를 만들었을 때, 사용하나 비밀키가 일치하는지 검증
-const decodedValueByVerify = jwt.verify(token, "mysecretKey");
-console.log("decodedValueByVerify :", decodedValueByVerify);
-
-// jwt를 만들었을 때, 사용하나 비밀키가 일치하는지 검증하지만 에러 발생
-const decodedValueByVerifyToError = jwt.verify(token, "비밀키를 다르게 입력해봄.");
-console.log("decodedValueByVerifyToError :", decodedValueByVerifyToError);
+app.listen(5002, () => {
+  console.log(5002, "번호로 서버가 켜졌어요!");
+});
